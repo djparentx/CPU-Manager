@@ -1,6 +1,7 @@
 # Simple CPU Manager
 
-v2.1 by djparent  
+v2.1 by djparent 
+
 Derived from ArkOS Manager by @lcdyk
 
 ---
