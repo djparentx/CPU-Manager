@@ -16,6 +16,7 @@ This script removes unnecessary complexity from ArkOS Manager and provides a fas
 
 ## Features
 
+- B button now functions as back button
 - GPU frequency management with formatted MHz display  
 - CPU governor selection applied across all cores  
 - CPU max frequency control with sorted frequency list  
