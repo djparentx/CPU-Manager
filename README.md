@@ -1,4 +1,4 @@
-# Simple CPU Manager
+# Simple CPU Manager (R36S - ArkOS/dArkOS/RE)
 
 v2.1 by djparent 
 
