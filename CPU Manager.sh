@@ -1,6 +1,6 @@
 #!/bin/bash
 # =========================================================
-# Simple CPU Manager 2.0 - Processor Management Script
+# Simple CPU Manager 2.1 - Processor Management Script
 # created by djparent
 # A derivative of Ark Manager by @lcdyk
 # =========================================================
@@ -44,6 +44,7 @@ export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 SYSTEM_LANG=""
 GPTOKEYB_PID=""
 CURR_TTY="/dev/tty1"
+TMP_KEYS="/tmp/keys.gptk.$$"
 CPU_SYSFS="/sys/devices/system/cpu"
 ES_CONF="/home/ark/.emulationstation/es_settings.cfg"
 GPU_SYSFS=$(ls -d /sys/class/devfreq/ff400000.gpu 2>/dev/null | head -n 1)
@@ -385,7 +386,7 @@ StartGPTKeyb() {
         kill "$GPTOKEYB_PID" 2>/dev/null
     fi
     sleep 0.1
-    /opt/inttools/gptokeyb -1 "$0" -c "/opt/inttools/keys.gptk" > /dev/null 2>&1 &
+	/opt/inttools/gptokeyb -1 "$0" -c "$TMP_KEYS" > /dev/null 2>&1 &
     GPTOKEYB_PID=$!
 }
 
@@ -397,6 +398,10 @@ StopGPTKeyb() {
         kill "$GPTOKEYB_PID" 2>/dev/null
         GPTOKEYB_PID=""
     fi
+}
+
+Cleanup() {
+    rm -f "$TMP_KEYS"
 }
 
 # -------------------------------------------------------
@@ -951,6 +956,11 @@ MainMenu() {
 # -------------------------------------------------------
 export SDL_GAMECONTROLLERCONFIG_FILE="/opt/inttools/gamecontrollerdb.txt"
 sudo chmod 666 /dev/uinput
+cp /opt/inttools/keys.gptk "$TMP_KEYS"
+if grep -q '^b = backspace' "$TMP_KEYS"; then
+    sed -i 's/^b = .*/b = esc/' "$TMP_KEYS"
+    sed -i 's/^a = .*/a = enter/' "$TMP_KEYS"
+fi
 StartGPTKeyb
 
 # ---------------------------------------------------------
@@ -958,6 +968,6 @@ StartGPTKeyb
 # ---------------------------------------------------------
 printf "\033[H\033[2J" > "$CURR_TTY"
 dialog --clear || true
-trap ExitMenu EXIT
+trap 'StopGPTKeyb; Cleanup' ExitMenu EXIT
 
 MainMenu
