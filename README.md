@@ -1,6 +1,6 @@
-# Simple CPU Manager 2.0 (R36S)
+# Simple CPU Manager
 
-by djparent  
+v2.1 by djparent  
 Derived from ArkOS Manager by @lcdyk
 
 ---
