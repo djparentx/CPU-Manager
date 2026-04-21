@@ -955,7 +955,7 @@ MainMenu() {
 # Gamepad Setup
 # -------------------------------------------------------
 export SDL_GAMECONTROLLERCONFIG_FILE="/opt/inttools/gamecontrollerdb.txt"
-sudo chmod 666 /dev/uinput
+chmod 666 /dev/uinput
 cp /opt/inttools/keys.gptk "$TMP_KEYS"
 if grep -q '^b = backspace' "$TMP_KEYS"; then
     sed -i 's/^b = .*/b = esc/' "$TMP_KEYS"
@@ -968,6 +968,6 @@ StartGPTKeyb
 # ---------------------------------------------------------
 printf "\033[H\033[2J" > "$CURR_TTY"
 dialog --clear || true
-trap 'StopGPTKeyb; Cleanup' ExitMenu EXIT
+trap 'StopGPTKeyb; Cleanup; ExitMenu' EXIT
 
 MainMenu
